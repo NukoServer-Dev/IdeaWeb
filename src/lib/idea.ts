@@ -3,31 +3,43 @@ import type { Idea } from "../types/idea.js";
 
 const ITEMS_PER_PAGE = 10;
 
-export function getIdeas(page = 1) {
+export function getIdeas(page = 1, search_word: string = "") {
     page = Math.max(1, Math.floor(Number(page) || 1));
 
     const offset = (page - 1) * ITEMS_PER_PAGE;
+    const keyword = search_word.trim();
+
+    const where = keyword
+        ? `WHERE author LIKE ? OR idea LIKE ? OR description LIKE ?`
+        : "";
+
+    const params = keyword
+        ? Array(3).fill(`%${keyword}%`)
+        : [];
 
     const ideas = db.prepare(`
         SELECT *
         FROM ideas
+        ${where}
         ORDER BY id DESC
         LIMIT ? OFFSET ?
-    `).all(ITEMS_PER_PAGE, offset);
+    `).all(...params, ITEMS_PER_PAGE, offset);
 
     const total = db.prepare(`
         SELECT COUNT(*) AS count
         FROM ideas
-    `).get()?.count ?? 0;
+        ${where}
+    `).get(...params)?.count ?? 0;
 
     const ideasType: Idea[] = [];
+
     for (const idea of ideas) {
         ideasType.push({
             Author: idea.author as string,
             Idea: idea.idea as string,
             Description: idea.description as string,
             CreatedAt: idea.createdAt as string,
-        })
+        });
     }
 
     return {
@@ -35,7 +47,7 @@ export function getIdeas(page = 1) {
         pagination: {
             currentPage: page,
             perPage: ITEMS_PER_PAGE,
-            total,
+            total: Number(total),
             totalPages: Math.ceil(Number(total) / ITEMS_PER_PAGE),
             hasNextPage: offset + ITEMS_PER_PAGE < Number(total),
             hasPreviousPage: page > 1
