@@ -8,5 +8,12 @@ export default defineConfig({
     devServer({
       entry: "./src/index.tsx"
     })
-  ]
+  ],
+  build: {
+    ssr: true,
+    rollupOptions: {
+      input: "src/server.tsx",
+    },
+    outDir: "dist",
+  },
 });
