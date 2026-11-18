@@ -8,6 +8,9 @@ function register(app: Hono) {
 
         const body = await c.req.parseBody();
         const username = typeof body.username === 'string' ? body.username.trim() : '';
+
+        if (username == "admin") return c.redirect('/create-account?message=そのユーザー名は既に使用されています。', 303);
+
         const password = typeof body.password === 'string' ? body.password : '';
         
         const ip = c.req.header('CF-Connecting-IP') ?? 'unknown';
