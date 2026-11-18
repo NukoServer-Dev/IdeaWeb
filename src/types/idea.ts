@@ -3,4 +3,5 @@ export interface Idea {
     Description: string,
     Author: string,
     CreatedAt: string,
+    ID: number,
 }

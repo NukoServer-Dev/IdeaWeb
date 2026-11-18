@@ -39,6 +39,7 @@ export function getIdeas(page = 1, search_word: string = "") {
             Idea: idea.idea as string,
             Description: idea.description as string,
             CreatedAt: idea.createdAt as string,
+            ID: idea.id as number
         });
     }
 
@@ -64,6 +65,36 @@ export function addIdea(author: string, idea: string, description: string) {
     return {
         success: true,
         id: Number(result.lastInsertRowid),
+        changes: Number(result.changes)
+    };
+}
+
+export function getIdea(id: number): Idea | null {
+    const idea = db.prepare(`
+        SELECT *
+        FROM ideas
+        WHERE id = ?
+    `).get(id);
+
+    if (!idea) return null;
+
+    return {
+        Author: idea.author as string,
+        Idea: idea.idea as string,
+        Description: idea.description as string,
+        CreatedAt: idea.createdAt as string,
+        ID: idea.id as number
+    };
+}
+
+export function deleteIdea(id: number) {
+    const result = db.prepare(`
+        DELETE FROM ideas
+        WHERE id = ?
+    `).run(id);
+
+    return {
+        success: Number(result.changes) > 0,
         changes: Number(result.changes)
     };
 }
