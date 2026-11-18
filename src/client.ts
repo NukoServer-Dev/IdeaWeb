@@ -1,5 +1,32 @@
 import "./style.css";
 
+const themeStorageKey = "ideaweb-theme";
+const savedTheme = localStorage.getItem(themeStorageKey);
+const initialTheme = savedTheme === "dark" ? "dark" : "light";
+document.documentElement.dataset.theme = initialTheme;
+
+const themeToggle = document.createElement("button");
+themeToggle.type = "button";
+themeToggle.className = "theme-toggle";
+themeToggle.setAttribute("aria-pressed", String(initialTheme === "dark"));
+
+const updateThemeButton = (theme: string) => {
+    const isDark = theme === "dark";
+    themeToggle.textContent = isDark ? "☀️ ライト" : "🌙 ダーク";
+    themeToggle.setAttribute("aria-label", isDark ? "ライトテーマに切り替え" : "ダークテーマに切り替え");
+    themeToggle.setAttribute("aria-pressed", String(isDark));
+};
+
+updateThemeButton(initialTheme);
+document.body.append(themeToggle);
+
+themeToggle.addEventListener("click", () => {
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = nextTheme;
+    localStorage.setItem(themeStorageKey, nextTheme);
+    updateThemeButton(nextTheme);
+});
+
 document.addEventListener("click", async (event) => {
     const target = event.target as HTMLElement;
     const button = target.closest<HTMLButtonElement>(".delete-button");

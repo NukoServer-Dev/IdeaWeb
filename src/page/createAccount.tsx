@@ -6,14 +6,15 @@ const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY
 function App({message}: {message: string | undefined}) {
     return (
         <html>
-            <header>
+            <head>
                 <title>アカウントの作成</title>
+                <script dangerouslySetInnerHTML={{ __html: "(()=>{const t=localStorage.getItem('ideaweb-theme')==='dark'?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.backgroundColor=t==='dark'?'#111827':'#e5e7eb'})()" }} />
                 {isDev ? (
                     <script type="module" src="/src/client.ts"></script>
                 ) : (
-                    <link rel="stylesheet" href="/assets/client.css" />
+                    <><link rel="stylesheet" href="/assets/client.css" /><script type="module" src="/assets/client.js"></script></>
                 )}
-            </header>
+            </head>
             
             <body class="p-3 bg-gray-200">
                 <h1 class="text-3xl">👋アカウント作成</h1><br/>
