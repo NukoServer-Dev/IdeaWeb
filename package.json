@@ -1,0 +1,37 @@
+{
+  "name": "ideaweb",
+  "version": "1.0.0",
+  "description": "アイディアを記録するためのWeb",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NukoServer-Dev/IdeaWeb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/NukoServer-Dev/IdeaWeb/issues"
+  },
+  "homepage": "https://github.com/NukoServer-Dev/IdeaWeb#readme",
+  "dependencies": {
+    "dotenv": "^18.0.10",
+    "hono": "^4.13.19"
+  },
+  "devDependencies": {
+    "@hono/node-server": "^2.1.9",
+    "@hono/vite-dev-server": "^0.26.1",
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^26.6.6",
+    "autoprefixer": "^10.6.2",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
+  }
+}
