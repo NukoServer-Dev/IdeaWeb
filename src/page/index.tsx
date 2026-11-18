@@ -2,12 +2,18 @@ import type { Hono } from "hono";
 import { getIdeas } from "../lib/idea.js";
 import type { Idea } from "../types/idea.js";
 
+const isDev = import.meta.env.DEV;
+
 function App({ideas, now_page, all_page, message, searchWord}: {ideas: Idea[], now_page: number, all_page: number, message: string | undefined, searchWord: string}) {
     return (
         <html>
             <header>
                 <title>IdeaWeb</title>
-                <link rel="stylesheet" href="/src/style.css"></link>
+                {isDev ? (
+                    <script type="module" src="/src/client.ts"></script>
+                ) : (
+                    <link rel="stylesheet" href="/assets/client.css" />
+                )}
             </header>
             
             <body class="p-3 bg-gray-200">

@@ -6,14 +6,21 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     devServer({
-      entry: "./src/index.tsx"
-    })
+      entry: "./src/index.tsx",
+    }),
   ],
+
   build: {
-    ssr: true,
+    outDir: "dist/client",
+    emptyOutDir: true,
+    manifest: true,
+
     rollupOptions: {
-      input: "src/server.tsx",
+      input: "./src/client.ts",
+      output: {
+        entryFileNames: "assets/[name].js",
+        assetFileNames: "assets/[name][extname]",
+      },
     },
-    outDir: "dist",
   },
 });
