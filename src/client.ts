@@ -42,3 +42,20 @@ document.addEventListener("click", async (event) => {
         button.disabled = false;
     }
 });
+
+declare const turnstile: {
+    render: (selector: string, options: { callback: (token: string) => void }) => unknown;
+};
+
+Object.assign(window, { _turnstileCb: () => {
+    turnstile.render('.cf-turnstile', {
+        callback: function(token: any) {
+            const tokenField = document.querySelector<HTMLInputElement>("#turnstile-token");
+            const submitButton = document.querySelector<HTMLButtonElement>("button[type='submit']");
+            if (tokenField && submitButton) {
+                tokenField.value = token;
+                submitButton.disabled = false;
+            }
+        },
+    })
+} });

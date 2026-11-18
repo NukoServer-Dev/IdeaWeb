@@ -5,13 +5,12 @@ function register(app: Hono) {
     app.post('/api/add-idea', async (c) => {
         const session = (c as unknown as {
             get: (key: 'session') => {
-                get: () => Promise<{ userId: string; role: 'admin'; userName: string; } | undefined>
-                update: (data: { userId: string; role: 'admin'; userName: string; }) => Promise<void>
+                get: () => Promise<{ userId: string; role: 'admin' | 'user'; userName: string; } | undefined>
             }
         }).get('session')
         const data = await session.get()
-        if (!data || Object.keys(data).length === 0) {
-            return c.redirect("/");
+        if (!data || (data.role !== 'admin' && data.role !== 'user')) {
+            return c.redirect("/login", 303);
         }
 
         const body = await c.req.parseBody()
@@ -20,9 +19,9 @@ function register(app: Hono) {
         const idea = body.idea as string
         const description = body.description as string
 
-        if (!author || !idea || !description) return c.redirect("/?message=必要な項目が入力されていません。")
+        if (!author || !idea || !description || author.length > 80 || idea.length > 200 || description.length > 5000) return c.redirect("/?message=入力内容を確認してください。", 303)
 
-        addIdea(author, idea, description)
+        addIdea(data.role === 'admin' ? author : data.userName, idea, description)
 
         return c.redirect("/?message=追加しました。")
     })

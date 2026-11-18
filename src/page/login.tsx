@@ -20,10 +20,15 @@ function App({message}: {message: string | undefined}) {
                 <form action="/api/login" method="post" class="border p-3 rounded">
                     <input name="username" placeholder="ユーザー名" class="p-1 text-white bg-gray-800 mb-3 rounded" /><br/>
                     <input name="password" placeholder="パスワード" class="p-1 text-white bg-gray-800 mb-3 rounded" type="password" /><br/>
-                    <button type="submit" class="bg-blue-500 text-white p-3 rounded">ログイン</button>
-                </form>{message ? <br/> : ""}
+                    <div class="flex gap-3">
+                        <button type="submit" class="bg-gray-500 text-white p-3 rounded">ログイン</button>
+                        <a href="/create-account" class="bg-blue-500 text-white p-3 rounded">アカウントを作成</a>
+                    </div>
+                </form>
 
-                {message ? <div class="border p-3 rounded">{message}<br/></div> : ''}<br/>
+                {message ? <div><br/><div class="border p-3 rounded">{message}<br/></div></div> : ''}
+
+                
             </body>
         </html>
     )

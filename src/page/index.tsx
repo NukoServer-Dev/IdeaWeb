@@ -29,13 +29,15 @@ function App(
                     あなたは{isAdmin ? '管理者' : 'ユーザー'}です。
                 </p><br/>
 
+                <form action="/api/logout" method="post"><button type="submit" class="bg-gray-700 text-white p-2 rounded">ログアウト</button></form><br/>
+
                 <form action="/api/add-idea" method="post" class="border p-3 rounded">
                     <h1 class="text-2xl p-0">✒️アイディアを投稿</h1><br/>
 
                     投稿者名: <input name="author" placeholder="投稿者名" class="p-1 text-white bg-gray-800 mb-3 rounded" value={username} /><br/>
                     アイディア名: <input name="idea" placeholder="アイディア名" class="p-1 text-white bg-gray-800 mb-3 rounded" /><br/>
                     説明: <br/>
-                    <textarea name="description" placeholder="説明" class="p-1 text-white bg-gray-800 mb-3 rounded"></textarea><br/>
+                    <textarea name="description" placeholder="説明" class="p-1 text-white bg-gray-800 mb-3 rounded w-full resize-y"></textarea><br/>
                     <button type="submit" class="bg-blue-500 text-white p-3 rounded">追加する</button>
                 </form>{message ? <br/> : ""}
 

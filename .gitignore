@@ -157,3 +157,5 @@ vite.config.ts.timestamp-*
 .nx/migrate-runs
 
 *.db
+*.db-shm
+*.db-wal
