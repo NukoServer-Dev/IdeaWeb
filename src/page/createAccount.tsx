@@ -8,6 +8,7 @@ function App({message}: {message: string | undefined}) {
         <html>
             <head>
                 <title>アカウントの作成</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
                 <script dangerouslySetInnerHTML={{ __html: "(()=>{const t=localStorage.getItem('ideaweb-theme')==='dark'?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.backgroundColor=t==='dark'?'#111827':'#e5e7eb'})()" }} />
                 {isDev ? (
                     <script type="module" src="/src/client.ts"></script>
