@@ -2,7 +2,6 @@ import type { Hono } from "hono";
 import { getIdeas } from "../lib/idea.js";
 import type { Idea } from "../types/idea.js";
 import { Unauthorized } from "./unauthorized.js";
-import { useState } from "hono/jsx";
 
 const isDev = import.meta.env.DEV;
 
@@ -15,6 +14,11 @@ function App(
             <head>
                 <title>IdeaWeb</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+
+                <meta property="og:url" content="https://idea.nuko-server.xyz/" />
+                <meta property="og:title" content="IdeaWeb" />
+                <meta property="og:description" content="みんなとアイディアを共有しよう。" />
+
                 <script dangerouslySetInnerHTML={{ __html: "(()=>{const t=localStorage.getItem('ideaweb-theme')==='dark'?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.backgroundColor=t==='dark'?'#111827':'#e5e7eb'})()" }} />
                 {isDev ? (
                     <script type="module" src="/src/client.ts"></script>
@@ -24,7 +28,7 @@ function App(
             </head>
             
             <body class="p-3 bg-gray-200">
-                <h1 class="text-3xl">💡IdeaWebへようこそ！</h1><br/>
+                <h1 class="text-3xl">🏠ホーム</h1><br/>
 
                 <p>
                     あなたは{isAdmin ? '管理者' : 'ユーザー'}です。
