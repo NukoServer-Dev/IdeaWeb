@@ -127,11 +127,9 @@ function App(
 
                 <form action="/api/logout" method="post"><button type="submit" class="bg-gray-700 text-white p-2 rounded">ログアウト</button></form><br/>
 
-                {!isAdmin ? <div><br/><form action="/api/delete-account" method="post" onsubmit="return confirm('アカウントを削除します。この操作は取り消せません。よろしいですか？')" class="border border-red-400 p-3 rounded w-fit mb-4">
-                    <h2 class="font-semibold">アカウント削除</h2>
-                    <p class="mb-2">自分のアカウントを削除します</p>
+                {!isAdmin ? <div><form action="/api/delete-account" method="post" onsubmit="return confirm('アカウントを削除します。この操作は取り消せません。よろしいですか？')">
                     <button type="submit" class="bg-red-600 text-white p-2 rounded bg-red-500">アカウントを削除</button>
-                </form><br/></div> : ""}
+                </form></div> : ""}
 
                 {isAdmin ? <p class="mb-4"><br/><a href="/admin" class="bg-blue-500 text-white px-3 py-2 rounded">管理者ページ</a></p> : ''}
             </body>
