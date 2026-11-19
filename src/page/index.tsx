@@ -62,6 +62,21 @@ function App(
                         <h3 class="text-xl">💡{idea.Idea} by {idea.Author}</h3>
                         <p>{idea.Description}</p>
                         <span class="text-xs">🗓️追加日: {idea.CreatedAt}</span>
+                        <div class="mt-3 flex items-center gap-3">
+                            <form action="/api/idea-like" method="post">
+                                <input type="hidden" name="ideaId" value={idea.ID} />
+                                <button type="submit" class="border px-3 py-1 rounded" aria-pressed={idea.LikedByMe ? "true" : "false"}>{idea.LikedByMe ? "♥ いいね済み" : "♡ いいね"} ({idea.LikeCount})</button>
+                            </form>
+                        </div>
+                        <div class="mt-3 border-t pt-3">
+                            <h4 class="font-semibold">返信 ({idea.Replies.length})</h4>
+                            {idea.Replies.map((reply) => <div class="mt-2"><strong>{reply.Author}</strong> <span class="text-xs">{reply.CreatedAt}</span><p class="whitespace-pre-wrap">{reply.Body}</p></div>)}
+                            <form action="/api/idea-reply" method="post" class="mt-3">
+                                <input type="hidden" name="ideaId" value={idea.ID} />
+                                <textarea name="body" maxLength={2000} required placeholder="返信を書く" class="p-2 rounded w-full resize-y" rows={2}></textarea>
+                                <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded mt-2">返信する</button>
+                            </form>
+                        </div>
                     </div>
                     {isAdmin ? <div>
                         <button
@@ -108,7 +123,7 @@ function register(app: Hono) {
 
         const searchWord = c.req.query("s") ?? ""
 
-        const ideas = getIdeas(page_num, searchWord)
+        const ideas = getIdeas(page_num, searchWord, data.userId)
 
         return c.html(<App ideas={ideas.data} all_page={ideas.pagination.totalPages} now_page={page_num} message={message} searchWord={searchWord} username={data.userName} isAdmin={data.role == "admin"} isUser={data.role == "user"} />);
     })

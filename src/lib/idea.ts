@@ -3,7 +3,7 @@ import type { Idea } from "../types/idea.js";
 
 const ITEMS_PER_PAGE = 10;
 
-export function getIdeas(page = 1, search_word: string = "") {
+export function getIdeas(page = 1, search_word: string = "", userId: string | number = "") {
     page = Math.max(1, Math.floor(Number(page) || 1));
 
     const offset = (page - 1) * ITEMS_PER_PAGE;
@@ -18,12 +18,14 @@ export function getIdeas(page = 1, search_word: string = "") {
         : [];
 
     const ideas = db.prepare(`
-        SELECT *
+        SELECT ideas.*,
+            (SELECT COUNT(*) FROM idea_likes WHERE idea_id = ideas.id) AS likeCount,
+            EXISTS(SELECT 1 FROM idea_likes WHERE idea_id = ideas.id AND user_id = ?) AS likedByMe
         FROM ideas
         ${where}
         ORDER BY id DESC
         LIMIT ? OFFSET ?
-    `).all(...params, ITEMS_PER_PAGE, offset);
+    `).all(userId, ...params, ITEMS_PER_PAGE, offset);
 
     const total = db.prepare(`
         SELECT COUNT(*) AS count
@@ -40,6 +42,8 @@ export function getIdeas(page = 1, search_word: string = "") {
             Description: idea.description as string,
             CreatedAt: idea.createdAt as string,
             ID: idea.id as number
+            ,LikeCount: Number(idea.likeCount), LikedByMe: Boolean(idea.likedByMe),
+            Replies: db.prepare(`SELECT username, body, created_at FROM idea_replies WHERE idea_id = ? ORDER BY id ASC`).all(idea.id).map((reply: any) => ({ Author: reply.username as string, Body: reply.body as string, CreatedAt: reply.created_at as string }))
         });
     }
 
@@ -83,7 +87,8 @@ export function getIdea(id: number): Idea | null {
         Idea: idea.idea as string,
         Description: idea.description as string,
         CreatedAt: idea.createdAt as string,
-        ID: idea.id as number
+        ID: idea.id as number,
+        LikeCount: 0, LikedByMe: false, Replies: []
     };
 }
 

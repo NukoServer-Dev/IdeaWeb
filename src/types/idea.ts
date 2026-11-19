@@ -4,4 +4,7 @@ export interface Idea {
     Author: string,
     CreatedAt: string,
     ID: number,
+    LikeCount: number,
+    LikedByMe: boolean,
+    Replies: { Author: string; Body: string; CreatedAt: string }[],
 }

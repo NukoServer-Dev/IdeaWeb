@@ -10,6 +10,7 @@ import login from "./api/login.js"
 import logout from "./api/logout.js"
 import CreateAccount from "./page/createAccount.js"
 import createAccount from "./api/createAccount.js"
+import engagement from "./api/engagement.js"
 
 import { initDB } from './db.js';
 import type { SessionData } from './types/session.js';
@@ -49,6 +50,7 @@ async function registerStart() {
     search(app);
     login(app);
     createAccount(app);
+    engagement(app);
     logout(app);
 }
 
