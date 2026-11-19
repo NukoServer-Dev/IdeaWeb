@@ -133,7 +133,7 @@ function App(
                     <button type="submit" class="bg-red-600 text-white p-2 rounded bg-red-500">アカウントを削除</button>
                 </form><br/></div> : ""}
 
-                {isAdmin ? <p class="mb-4"><a href="/admin" class="bg-blue-500 text-white px-3 py-2 rounded">⚙️ 管理者ページ</a></p> : ''}
+                {isAdmin ? <p class="mb-4"><br/><a href="/admin" class="bg-blue-500 text-white px-3 py-2 rounded">⚙️ 管理者ページ</a></p> : ''}
             </body>
         </html>
     )

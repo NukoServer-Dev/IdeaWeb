@@ -14,7 +14,7 @@ function AdminPage({ rules, message }: { rules: string; message: string | undefi
             </head>
             <body class="p-3 bg-gray-200">
                 <h1 class="text-3xl">⚙️ 管理者ページ</h1><br />
-                <p class="mb-4"><a href="/" class="bg-gray-700 text-white px-3 py-2 rounded">ホームへ戻る</a></p>
+                <p class="mb-4"><a href="/" class="bg-gray-700 text-white px-3 py-2 rounded">ホームへ戻る</a></p><br/><br/>
                 <form action="/api/admin/posting-rules" method="post" class="border border-blue-400 p-3 rounded max-w-3xl">
                     <h2 class="text-xl font-semibold">📋 書き込みルールの設定</h2>
                     <p class="text-sm mt-1 mb-2">設定したルールはホーム画面と投稿欄に表示されます（5000文字まで）。</p>
