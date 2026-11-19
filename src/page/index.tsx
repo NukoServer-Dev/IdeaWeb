@@ -80,7 +80,8 @@ function App(
                     <button type="submit" class="bg-blue-500 text-white p-2 rounded">検索</button>
                 </form>
 
-                {ideas.length != 0 ? ideas.map((idea) => <div class="border p-3 rounded mt-3 flex justify-between items-start w-fit">
+                {ideas.length != 0 ? <div class="flex flex-wrap items-start gap-3">
+                {ideas.map((idea) => <div class="border p-3 rounded flex justify-between items-start w-fit max-w-full">
                     <div>
                         <h3 class="text-xl">💡{idea.Idea} by {idea.Author}</h3>
                         <div class="markdown-content" dangerouslySetInnerHTML={{ __html: markdown.render(idea.Description) }} />
@@ -110,7 +111,8 @@ function App(
                             🗑️
                         </button>
                     </div> : ""}
-                </div>) : "まだ投稿がありません。"}<br/><br/>
+                </div>)}
+                </div> : "まだ投稿がありません。"}<br/><br/>
 
                 <div class="flex gap-2">
                     {all_page != 1 ? (all_page > now_page ? "" : <a href={`?p=${now_page - 1}`} class="bg-blue-500 text-white p-3 rounded">前のページ</a>) : ""}
