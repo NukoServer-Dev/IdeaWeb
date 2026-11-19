@@ -60,8 +60,6 @@ function App(
                     あなたは{isAdmin ? '管理者' : 'ユーザー'}です。
                 </p><br/>
 
-                <form action="/api/logout" method="post"><button type="submit" class="bg-gray-700 text-white p-2 rounded">ログアウト</button></form><br/>
-
                 {postingRules ? <section class="border border-amber-400 p-3 rounded mb-4 max-w-3xl" aria-labelledby="posting-rules-title">
                     <h2 id="posting-rules-title" class="text-xl font-semibold">📋 投稿のルール</h2>
                     <div class="markdown-content mt-2" dangerouslySetInnerHTML={{ __html: markdown.render(postingRules) }} />
@@ -74,8 +72,8 @@ function App(
                     投稿者名: <input name="author" placeholder="投稿者名" class="p-1 text-white bg-gray-800 mb-3 rounded" value={username} /><br/>
                     アイディア名: <input name="idea" placeholder="アイディア名" class="p-1 text-white bg-gray-800 mb-3 rounded" /><br/>
                     説明: <br/>
-                    <textarea name="description" placeholder="説明（Markdown対応）" class="p-1 text-white bg-gray-800 mb-3 rounded w-full resize-y"></textarea><br/>
-                    <button type="submit" class="bg-blue-500 text-white p-3 rounded">追加する</button>
+                    <textarea name="description" placeholder="説明" class="p-1 text-white bg-gray-800 mb-3 rounded w-full resize-y"></textarea><br/>
+                    <button type="submit" class="bg-blue-500 text-white p-3 rounded">投稿する</button>
                 </form>{message ? <br/> : ""}
 
                 {message ? <div class="border p-3 rounded w-fit">{message}<br/></div> : ''}<br/>
@@ -104,7 +102,7 @@ function App(
                             {idea.Replies.map((reply) => <div class="mt-2"><strong>{reply.Author}</strong> <span class="text-xs">{reply.CreatedAt}</span><div class="markdown-content" dangerouslySetInnerHTML={{ __html: markdown.render(reply.Body) }} /></div>)}
                             <form action="/api/idea-reply" method="post" class="mt-3">
                                 <input type="hidden" name="ideaId" value={idea.ID} />
-                                <textarea name="body" maxLength={2000} required placeholder="返信を書く（Markdown対応）" class="p-2 rounded w-full resize-y" rows={2}></textarea>
+                                <textarea name="body" maxLength={2000} required placeholder="返信を書く" class="p-2 rounded w-full resize-y" rows={2}></textarea>
                                 <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded mt-2">返信する</button>
                             </form>
                         </div>
@@ -127,13 +125,15 @@ function App(
                     {all_page <= now_page ? "" : <a href={`?p=${now_page + 1}`} class="bg-blue-500 text-white p-3 rounded">次のページ</a>}
                 </div>
 
+                <form action="/api/logout" method="post"><button type="submit" class="bg-gray-700 text-white p-2 rounded">ログアウト</button></form><br/>
+
                 {!isAdmin ? <div><br/><form action="/api/delete-account" method="post" onsubmit="return confirm('アカウントを削除します。この操作は取り消せません。よろしいですか？')" class="border border-red-400 p-3 rounded w-fit mb-4">
                     <h2 class="font-semibold">アカウント削除</h2>
                     <p class="mb-2">自分のアカウントを削除します</p>
                     <button type="submit" class="bg-red-600 text-white p-2 rounded bg-red-500">アカウントを削除</button>
                 </form><br/></div> : ""}
 
-                {isAdmin ? <p class="mb-4"><br/><a href="/admin" class="bg-blue-500 text-white px-3 py-2 rounded">⚙️ 管理者ページ</a></p> : ''}
+                {isAdmin ? <p class="mb-4"><br/><a href="/admin" class="bg-blue-500 text-white px-3 py-2 rounded">管理者ページ</a></p> : ''}
             </body>
         </html>
     )
