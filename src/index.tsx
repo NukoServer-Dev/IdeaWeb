@@ -11,6 +11,7 @@ import logout from "./api/logout.js"
 import CreateAccount from "./page/createAccount.js"
 import createAccount from "./api/createAccount.js"
 import engagement from "./api/engagement.js"
+import deleteAccount from "./api/deleteAccount.js"
 
 import { initDB } from './db.js';
 import type { SessionData } from './types/session.js';
@@ -51,6 +52,7 @@ async function registerStart() {
     login(app);
     createAccount(app);
     engagement(app);
+    deleteAccount(app);
     logout(app);
 }
 

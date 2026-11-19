@@ -119,6 +119,12 @@ function App(
                     <span class="p-3">{now_page} / {all_page}</span>
                     {all_page <= now_page ? "" : <a href={`?p=${now_page + 1}`} class="bg-blue-500 text-white p-3 rounded">次のページ</a>}
                 </div>
+
+                {!isAdmin ? <form action="/api/delete-account" method="post" onsubmit="return confirm('アカウントを削除します。この操作は取り消せません。よろしいですか？')" class="border border-red-400 p-3 rounded w-fit mb-4">
+                    <h2 class="font-semibold">アカウント削除</h2>
+                    <p class="mb-2">自分のアカウントを削除します</p>
+                    <button type="submit" class="bg-red-600 text-white p-2 rounded">アカウントを削除</button>
+                </form> : ""}
             </body>
         </html>
     )
