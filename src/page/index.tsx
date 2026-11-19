@@ -63,7 +63,7 @@ function App(
                 <form action="/api/logout" method="post"><button type="submit" class="bg-gray-700 text-white p-2 rounded">ログアウト</button></form><br/>
 
                 {postingRules ? <section class="border border-amber-400 p-3 rounded mb-4 max-w-3xl" aria-labelledby="posting-rules-title">
-                    <h2 id="posting-rules-title" class="text-xl font-semibold">📋 書き込みのルール</h2>
+                    <h2 id="posting-rules-title" class="text-xl font-semibold">📋 投稿のルール</h2>
                     <div class="markdown-content mt-2" dangerouslySetInnerHTML={{ __html: markdown.render(postingRules) }} />
                 </section> : ''}
 
