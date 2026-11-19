@@ -1,5 +1,34 @@
 import "./style.css";
 
+// Full-page POST/redirect submissions can lose the browser's scroll position.
+// Remember it for idea interactions and restore it once the redirected page loads.
+const scrollPositionKey = "ideaweb-return-scroll";
+const savedScrollPosition = sessionStorage.getItem(scrollPositionKey);
+if (savedScrollPosition) {
+    sessionStorage.removeItem(scrollPositionKey);
+    try {
+        const saved = JSON.parse(savedScrollPosition) as { url: string; y: number; savedAt: number };
+        if (saved.url === `${location.pathname}${location.search}` && Date.now() - saved.savedAt < 30_000) {
+            requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, saved.y)));
+        }
+    } catch {
+        // Ignore invalid or stale scroll state.
+    }
+}
+
+document.addEventListener("submit", (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement)) return;
+    const action = new URL(form.action, location.href);
+    if (action.origin !== location.origin || !["/api/idea-like", "/api/idea-reply"].includes(action.pathname)) return;
+
+    sessionStorage.setItem(scrollPositionKey, JSON.stringify({
+        url: `${location.pathname}${location.search}`,
+        y: window.scrollY,
+        savedAt: Date.now(),
+    }));
+}, true);
+
 const themeStorageKey = "ideaweb-theme";
 const savedTheme = localStorage.getItem(themeStorageKey);
 const initialTheme = savedTheme === "dark" ? "dark" : "light";
