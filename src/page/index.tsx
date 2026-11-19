@@ -64,7 +64,7 @@ function App(
 
                 {postingRules ? <section class="border border-amber-400 p-3 rounded mb-4 max-w-3xl" aria-labelledby="posting-rules-title">
                     <h2 id="posting-rules-title" class="text-xl font-semibold">📋 書き込みのルール</h2>
-                    <p class="whitespace-pre-wrap mt-2">{postingRules}</p>
+                    <div class="markdown-content mt-2" dangerouslySetInnerHTML={{ __html: markdown.render(postingRules) }} />
                 </section> : ''}
 
                 <form action="/api/add-idea" method="post" class="border p-3 rounded w-fit">
