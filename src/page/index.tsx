@@ -3,6 +3,7 @@ import { getIdeas } from "../lib/idea.js";
 import type { Idea } from "../types/idea.js";
 import { Unauthorized } from "./unauthorized.js";
 import MarkdownIt from "markdown-it";
+import { db } from "../db.js";
 
 const markdown = new MarkdownIt({
     html: false,
@@ -29,8 +30,8 @@ markdown.renderer.rules.link_open = (tokens, index, options, _env, self) => {
 const isDev = import.meta.env.DEV;
 
 function App(
-    {ideas, now_page, all_page, message, searchWord, isAdmin, username}: 
-    {ideas: Idea[], now_page: number, all_page: number, message: string | undefined, searchWord: string, isAdmin: boolean, isUser: boolean, username: string}
+    {ideas, now_page, all_page, message, searchWord, isAdmin, username, postingRules}:
+    {ideas: Idea[], now_page: number, all_page: number, message: string | undefined, searchWord: string, isAdmin: boolean, isUser: boolean, username: string, postingRules: string}
 ) {
     return (
         <html>
@@ -61,8 +62,14 @@ function App(
 
                 <form action="/api/logout" method="post"><button type="submit" class="bg-gray-700 text-white p-2 rounded">ログアウト</button></form><br/>
 
+                {postingRules ? <section class="border border-amber-400 p-3 rounded mb-4 max-w-3xl" aria-labelledby="posting-rules-title">
+                    <h2 id="posting-rules-title" class="text-xl font-semibold">📋 書き込みのルール</h2>
+                    <p class="whitespace-pre-wrap mt-2">{postingRules}</p>
+                </section> : ''}
+
                 <form action="/api/add-idea" method="post" class="border p-3 rounded w-fit">
                     <h1 class="text-2xl p-0">✒️アイディアを投稿</h1><br/>
+                    {postingRules ? <p class="whitespace-pre-wrap mb-3 border-l-4 border-amber-400 pl-2">投稿前にルールをご確認ください。</p> : ''}
 
                     投稿者名: <input name="author" placeholder="投稿者名" class="p-1 text-white bg-gray-800 mb-3 rounded" value={username} /><br/>
                     アイディア名: <input name="idea" placeholder="アイディア名" class="p-1 text-white bg-gray-800 mb-3 rounded" /><br/>
@@ -124,7 +131,9 @@ function App(
                     <h2 class="font-semibold">アカウント削除</h2>
                     <p class="mb-2">自分のアカウントを削除します</p>
                     <button type="submit" class="bg-red-600 text-white p-2 rounded bg-red-500">アカウントを削除</button>
-                </form></div> : ""}
+                </form><br/></div> : ""}
+
+                {isAdmin ? <p class="mb-4"><a href="/admin" class="bg-blue-500 text-white px-3 py-2 rounded">⚙️ 管理者ページ</a></p> : ''}
             </body>
         </html>
     )
@@ -153,10 +162,11 @@ function register(app: Hono) {
         }
 
         const searchWord = c.req.query("s") ?? ""
+        const postingRules = (db.prepare('SELECT value FROM app_settings WHERE key = ?').get('posting_rules') as { value?: string } | undefined)?.value ?? ''
 
         const ideas = getIdeas(page_num, searchWord, data.userId)
 
-        return c.html(<App ideas={ideas.data} all_page={ideas.pagination.totalPages} now_page={page_num} message={message} searchWord={searchWord} username={data.userName} isAdmin={data.role == "admin"} isUser={data.role == "user"} />);
+        return c.html(<App ideas={ideas.data} all_page={ideas.pagination.totalPages} now_page={page_num} message={message} searchWord={searchWord} username={data.userName} isAdmin={data.role == "admin"} isUser={data.role == "user"} postingRules={postingRules} />);
     })
 }
 

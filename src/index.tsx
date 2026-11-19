@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { useSession } from '@hono/session';
 
 import Index from './page/index.js';
+import AdminPage from './page/admin.js';
 import Login from "./page/login.js"
 import addIdea from "./api/addIdea.js"
 import deleteIdea from "./api/deleteIdea.js"
@@ -12,6 +13,7 @@ import CreateAccount from "./page/createAccount.js"
 import createAccount from "./api/createAccount.js"
 import engagement from "./api/engagement.js"
 import deleteAccount from "./api/deleteAccount.js"
+import postingRules from "./api/postingRules.js"
 
 import { initDB } from './db.js';
 import type { SessionData } from './types/session.js';
@@ -43,6 +45,7 @@ async function registerStart() {
     initDB();
 
     Index(app);
+    AdminPage(app);
     Login(app);
     CreateAccount(app);
     
@@ -53,6 +56,7 @@ async function registerStart() {
     createAccount(app);
     engagement(app);
     deleteAccount(app);
+    postingRules(app);
     logout(app);
 }
 

@@ -21,6 +21,10 @@ export function initDB() {
             password_hash TEXT NOT NULL,
             created_at TEXT NOT NULL DEFAULT (DATETIME('now'))
         );
+        CREATE TABLE IF NOT EXISTS app_settings (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL
+        );
         CREATE TABLE IF NOT EXISTS auth_attempts (
             attempt_key TEXT NOT NULL,
             attempted_at INTEGER NOT NULL
